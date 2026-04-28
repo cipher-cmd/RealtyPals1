@@ -1,0 +1,1113 @@
+{
+	"info": {
+		"_postman_id": "investors-clinic-api",
+		"name": "Investors Clinic API",
+		"description": "Complete API collection for Investors Clinic backend prototype\n\nNote: This prototype is validated on Sector 150, Noida only.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Properties",
+			"item": [
+				{
+					"name": "Get Properties (Discovery)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/properties?sector=Sector 150&bhk=3&min_price=5000000&max_price=8000000&property_type=flat",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"properties"
+							],
+							"query": [
+								{
+									"key": "sector",
+									"value": "Sector 150",
+									"description": "Required: Sector name"
+								},
+								{
+									"key": "bhk",
+									"value": "3",
+									"description": "Optional: Number of bedrooms"
+								},
+								{
+									"key": "min_price",
+									"value": "5000000",
+									"description": "Optional: Minimum price filter"
+								},
+								{
+									"key": "max_price",
+									"value": "8000000",
+									"description": "Optional: Maximum price filter"
+								},
+								{
+									"key": "property_type",
+									"value": "flat",
+									"description": "Optional: 'flat' or 'plot'"
+								}
+							]
+						},
+						"description": "Discover and rank properties based on filters. Returns max 10 ranked properties."
+					},
+					"response": [
+						{
+							"name": "Success - 3BHK Properties",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/properties?sector=Sector 150&bhk=3",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"properties"
+									],
+									"query": [
+										{
+											"key": "sector",
+											"value": "Sector 150"
+										},
+										{
+											"key": "bhk",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"properties\": [\n    {\n      \"id\": \"uuid-here\",\n      \"sector_id\": \"sector-uuid\",\n      \"property_type\": \"flat\",\n      \"bhk\": 3,\n      \"size_sqft\": 1400,\n      \"price\": 7000000,\n      \"price_per_sqft\": 5000,\n      \"builder\": \"Godrej\",\n      \"floor\": 5,\n      \"status\": \"ready\",\n      \"amenities\": [\"parking\", \"security\", \"lift\"],\n      \"score\": 15\n    }\n  ]\n}"
+						},
+						{
+							"name": "Error - Invalid Sector",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/properties?sector=Sector 99",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"properties"
+									],
+									"query": [
+										{
+											"key": "sector",
+											"value": "Sector 99"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Invalid sector. Only 'Sector 150' is supported.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Property by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/properties/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"properties",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "property-id-from-seed",
+									"description": "Property UUID from database"
+								}
+							]
+						},
+						"description": "Get detailed information about a specific property by ID."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/properties/property-id-here",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"properties",
+										"property-id-here"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"property\": {\n    \"id\": \"uuid-here\",\n    \"sector_id\": \"sector-uuid\",\n    \"property_type\": \"flat\",\n    \"bhk\": 3,\n    \"size_sqft\": 1400,\n    \"price\": 7000000,\n    \"price_per_sqft\": 5000,\n    \"builder\": \"Godrej\",\n    \"floor\": 5,\n    \"status\": \"ready\",\n    \"amenities\": [\"parking\", \"security\", \"lift\", \"power_backup\", \"gym\", \"swimming_pool\"],\n    \"sector\": {\n      \"id\": \"sector-uuid\",\n      \"city\": \"Noida\",\n      \"name\": \"Sector 150\",\n      \"avg_price_low\": 4500,\n      \"avg_price_high\": 6500,\n      \"demand_level\": \"medium\",\n      \"supply_level\": \"medium\",\n      \"volatility_flag\": false\n    }\n  }\n}"
+						},
+						{
+							"name": "Error - Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/properties/nonexistent-id",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"properties",
+										"nonexistent-id"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Property not found\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Property discovery and details endpoints"
+		},
+		{
+			"name": "Value Check",
+			"item": [
+				{
+					"name": "Check Value (With Quoted Price)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sector\": \"Sector 150\",\n  \"bhk\": 3,\n  \"size_sqft\": 1400,\n  \"quoted_price\": 7500000,\n  \"property_type\": \"flat\",\n  \"property_status\": \"ready\",\n  \"builder\": \"Godrej\",\n  \"floor\": 8\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/value-check",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"value-check"
+							]
+						},
+						"description": "Get market range estimate and verdict for a property quote. All fields except quoted_price, property_status, builder, and floor are required."
+					},
+					"response": [
+						{
+							"name": "Success - Within Market",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"sector\": \"Sector 150\",\n  \"bhk\": 3,\n  \"size_sqft\": 1400,\n  \"quoted_price\": 7500000,\n  \"property_type\": \"flat\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/value-check",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"value-check"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"market_range\": {\n    \"low\": 6720000,\n    \"high\": 8400000\n  },\n  \"verdict\": \"Within market\",\n  \"reason_codes\": [\n    \"MARKET_ALIGNMENT\",\n    \"BUILDER_PREMIUM\",\n    \"FLOOR_PREMIUM\"\n  ],\n  \"risk_flag\": \"LOW\"\n}"
+						},
+						{
+							"name": "Success - Slightly High",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"sector\": \"Sector 150\",\n  \"bhk\": 3,\n  \"size_sqft\": 1400,\n  \"quoted_price\": 9000000,\n  \"property_type\": \"flat\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/value-check",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"value-check"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"market_range\": {\n    \"low\": 6720000,\n    \"high\": 8400000\n  },\n  \"verdict\": \"Slightly high\",\n  \"reason_codes\": [\n    \"RECENT_LOWER_DEALS\"\n  ],\n  \"risk_flag\": \"MEDIUM\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Check Value (Market Range Only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sector\": \"Sector 150\",\n  \"bhk\": 3,\n  \"size_sqft\": 1400,\n  \"property_type\": \"flat\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/value-check",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"value-check"
+							]
+						},
+						"description": "Get market range without quoted price. Verdict will be 'Market range only' and risk_flag will be 'MEDIUM'."
+					},
+					"response": [
+						{
+							"name": "Success - Market Range Only",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"sector\": \"Sector 150\",\n  \"bhk\": 3,\n  \"size_sqft\": 1400,\n  \"property_type\": \"flat\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/value-check",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"value-check"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"market_range\": {\n    \"low\": 6720000,\n    \"high\": 8400000\n  },\n  \"verdict\": \"Market range only\",\n  \"reason_codes\": [],\n  \"risk_flag\": \"MEDIUM\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Error - Invalid Sector",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sector\": \"Sector 99\",\n  \"bhk\": 3,\n  \"size_sqft\": 1400,\n  \"property_type\": \"flat\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/value-check",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"value-check"
+							]
+						},
+						"description": "Error case: Invalid sector (only Sector 150 supported)"
+					},
+					"response": [
+						{
+							"name": "Error - Invalid Sector",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"sector\": \"Sector 99\",\n  \"bhk\": 3,\n  \"size_sqft\": 1400,\n  \"property_type\": \"flat\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/value-check",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"value-check"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Invalid sector. Only 'Sector 150' is supported.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Error - Missing Required Fields",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sector\": \"Sector 150\",\n  \"bhk\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/value-check",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"value-check"
+							]
+						},
+						"description": "Error case: Missing required fields"
+					},
+					"response": [
+						{
+							"name": "Error - Missing Required Fields",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"sector\": \"Sector 150\",\n  \"bhk\": 3\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/value-check",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"value-check"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Missing required fields: sector, bhk, size_sqft, property_type\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Value estimation and market range endpoints"
+		},
+		{
+			"name": "Compare",
+			"item": [
+				{
+					"name": "Compare Two Properties",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"property_id_1\": \"property-id-1-from-seed\",\n  \"property_id_2\": \"property-id-2-from-seed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/compare",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"compare"
+							]
+						},
+						"description": "Compare two properties side-by-side. Returns normalized comparison with differences."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"property_id_1\": \"property-id-1\",\n  \"property_id_2\": \"property-id-2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/compare",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"compare"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"property_1\": {\n    \"id\": \"uuid-1\",\n    \"price\": 7000000,\n    \"price_per_sqft\": 5000,\n    \"size_sqft\": 1400,\n    \"status\": \"ready\",\n    \"amenities\": [\"parking\", \"security\", \"lift\", \"gym\"]\n  },\n  \"property_2\": {\n    \"id\": \"uuid-2\",\n    \"price\": 7105000,\n    \"price_per_sqft\": 4900,\n    \"size_sqft\": 1450,\n    \"status\": \"ready\",\n    \"amenities\": [\"parking\", \"security\", \"lift\"]\n  },\n  \"differences\": {\n    \"price_diff\": -105000,\n    \"price_per_sqft_diff\": 100,\n    \"size_diff\": -50,\n    \"amenities_diff\": {\n      \"only_in_1\": [\"gym\"],\n      \"only_in_2\": [],\n      \"common\": [\"parking\", \"security\", \"lift\"]\n    },\n    \"status_diff\": false\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "Error - Same Property",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"property_id_1\": \"same-id\",\n  \"property_id_2\": \"same-id\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/compare",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"compare"
+							]
+						},
+						"description": "Error case: Cannot compare property with itself"
+					},
+					"response": [
+						{
+							"name": "Error - Same Property",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"property_id_1\": \"same-id\",\n  \"property_id_2\": \"same-id\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/compare",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"compare"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Cannot compare property with itself\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Error - Property Not Found",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"property_id_1\": \"nonexistent-id\",\n  \"property_id_2\": \"another-nonexistent-id\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/compare",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"compare"
+							]
+						},
+						"description": "Error case: Property not found"
+					},
+					"response": [
+						{
+							"name": "Error - Property Not Found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"property_id_1\": \"nonexistent-id\",\n  \"property_id_2\": \"another-nonexistent-id\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/compare",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"compare"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Property not found\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Property comparison endpoints"
+		},
+		{
+			"name": "Saved Properties",
+			"item": [
+				{
+					"name": "Save Property",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-User-Id",
+								"value": "{{user_id}}",
+								"description": "Required: User identifier"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"property_id\": \"property-id-from-seed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/saved-properties",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"saved-properties"
+							]
+						},
+						"description": "Save a property for a user. Requires X-User-Id header."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-User-Id",
+										"value": "user123"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"property_id\": \"property-id-here\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/saved-properties",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"saved-properties"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"savedProperty\": {\n    \"user_id\": \"user123\",\n    \"property_id\": \"property-id-here\",\n    \"saved_at\": \"2024-01-15T10:30:00Z\"\n  }\n}"
+						},
+						{
+							"name": "Error - Missing X-User-Id",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"property_id\": \"property-id-here\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/saved-properties",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"saved-properties"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"X-User-Id header is required\"\n}"
+						},
+						{
+							"name": "Error - Property Not Found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "X-User-Id",
+										"value": "user123"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"property_id\": \"nonexistent-id\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/saved-properties",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"saved-properties"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Property not found\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Saved Properties",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-User-Id",
+								"value": "{{user_id}}",
+								"description": "Required: User identifier"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/saved-properties",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"saved-properties"
+							]
+						},
+						"description": "Get all saved properties for a user. Requires X-User-Id header."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-User-Id",
+										"value": "user123"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/v1/saved-properties",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"saved-properties"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"savedProperties\": [\n    {\n      \"user_id\": \"user123\",\n      \"property_id\": \"property-id-1\",\n      \"saved_at\": \"2024-01-15T10:30:00Z\",\n      \"property\": {\n        \"id\": \"property-id-1\",\n        \"bhk\": 3,\n        \"price\": 7000000,\n        \"price_per_sqft\": 5000,\n        \"size_sqft\": 1400,\n        \"builder\": \"Godrej\",\n        \"status\": \"ready\",\n        \"amenities\": [\"parking\", \"security\", \"lift\"]\n      }\n    },\n    {\n      \"user_id\": \"user123\",\n      \"property_id\": \"property-id-2\",\n      \"saved_at\": \"2024-01-14T09:20:00Z\",\n      \"property\": {\n        \"id\": \"property-id-2\",\n        \"bhk\": 2,\n        \"price\": 4500000,\n        \"price_per_sqft\": 4500,\n        \"size_sqft\": 1000,\n        \"builder\": \"DLF\",\n        \"status\": \"ready\",\n        \"amenities\": [\"parking\", \"security\"]\n      }\n    }\n  ]\n}"
+						},
+						{
+							"name": "Error - Missing X-User-Id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/v1/saved-properties",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"saved-properties"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"X-User-Id header is required\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Saved properties endpoints (require X-User-Id header)"
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "user123",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,83 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+*.log
+
+# Production
+build/
+dist/
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Next.js (frontend)
+frontend/.next/
+frontend/out/
+frontend/.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Database
+*.db
+*.sqlite
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Misc
+.cache/
+.temp/
+.tmp/
+# Added by code-review-graph
+.code-review-graph/
+
+# Agent Metadata & Scratch
+.claude/
+.gemini/
+.mcp.json
+scratch/
+rewrite_ai.js
+test_ai.js
+test_output.txt
+test_log.txt
+tsc_output.txt
+sidebar_test_output*.txt
+db-test-output.txt
+debug-db.js
+debug-prisma.js
+gemini-error-2.txt
+gemini-error.txt
+test-ai-output.txt
+test-ai.ts
+test-chat.js
+test-db.js
+test-prisma.js
+verify-db.js
+*.log
+*.txt
+# Ignore root level js files as this is a typescript project
+/*.js

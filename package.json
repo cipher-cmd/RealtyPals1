@@ -1,0 +1,46 @@
+{
+  "name": "investors-clinic",
+  "version": "1.0.0",
+  "description": "Investors Clinic Backend - Real Estate Value Estimation Prototype",
+  "main": "dist/src/server.js",
+  "scripts": {
+    "dev": "ts-node src/server.ts",
+    "build": "tsc",
+    "start": "node dist/src/server.js",
+    "test": "ts-node scripts/run-all-tests.ts",
+    "test:intent": "ts-node scripts/test-intent-manager.ts",
+    "test:health": "ts-node scripts/test-health-and-apis.ts",
+    "test:chat-qual": "ts-node scripts/test-chat-qualification.ts",
+    "test:chat-progressive": "ts-node scripts/test-chat-progressive.ts",
+    "test:chat-requalify": "ts-node scripts/test-chat-requalify-3bhk.ts",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:seed": "ts-node prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.0.0",
+    "@types/express-rate-limit": "^5.1.3",
+    "axios": "^1.15.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "duck-duck-scrape": "^2.2.7",
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.3.0",
+    "google-trends-api": "^4.9.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.0",
+    "ecc-universal": "^1.8.0",
+    "prisma": "^6.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

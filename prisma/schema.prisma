@@ -1,0 +1,197 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum DemandLevel {
+  low
+  medium
+  high
+}
+
+enum SupplyLevel {
+  low
+  medium
+  high
+}
+
+enum PropertyType {
+  flat
+  plot
+}
+
+enum PropertyStatus {
+  ready
+  under_construction
+}
+
+enum ConfidenceLevel {
+  low
+  medium
+  high
+}
+
+enum ImageType {
+  exterior
+  interior
+  floor_plan
+  amenity
+  view
+}
+
+model Sector {
+  id              String      @id @default(uuid())
+  city            String
+  name            String
+  avg_price_low   Int
+  avg_price_high  Int
+  demand_level    DemandLevel
+  supply_level    SupplyLevel
+  volatility_flag Boolean
+
+  properties        Property[]
+  priceBands        PriceBand[]
+  projectPriceBands ProjectPriceBand[]
+  intelligence      SectorIntelligence?
+
+  @@unique([city, name])
+  @@map("sectors")
+}
+
+model Property {
+  id             String         @id @default(uuid())
+  sector_id      String
+  property_type  PropertyType
+  bhk            Int
+  size_sqft      Int
+  price          Int
+  price_per_sqft Int
+  builder        String
+  project_name   String?
+  image_url      String?
+  floor          Int?
+  status         PropertyStatus
+  amenities      String[]
+  bathrooms      Int?
+  balconies      Int?
+  highlights     String[]
+
+  sector          Sector          @relation(fields: [sector_id], references: [id], onDelete: Cascade)
+  savedProperties SavedProperty[]
+  images          PropertyImage[]
+
+  @@index([sector_id])
+  @@index([sector_id, bhk])
+  @@index([sector_id, price])
+  @@index([sector_id, bhk, price])
+  @@map("properties")
+}
+
+model PropertyImage {
+  id          String    @id @default(uuid())
+  property_id String
+  image_url   String
+  image_type  ImageType
+  caption     String?
+  sort_order  Int       @default(0)
+
+  property Property @relation(fields: [property_id], references: [id], onDelete: Cascade)
+
+  @@index([property_id, image_type])
+  @@map("property_images")
+}
+
+model PriceBand {
+  id               String          @id @default(uuid())
+  sector_id        String
+  property_type    PropertyType?
+  bhk              Int?
+  min_size         Int
+  max_size         Int
+  price_low        Int
+  price_high       Int
+  confidence_level ConfidenceLevel
+
+  sector Sector @relation(fields: [sector_id], references: [id], onDelete: Cascade)
+
+  @@map("price_bands")
+}
+
+model SavedProperty {
+  user_id     String
+  property_id String
+  saved_at    DateTime @default(now())
+
+  property Property @relation(fields: [property_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, property_id])
+  @@map("saved_properties")
+}
+
+model ProjectPriceBand {
+  id            String   @id @default(uuid())
+  project_name  String
+  sector_id     String
+  bhk           Int?
+  min_price_psf Int
+  max_price_psf Int
+  confidence    ConfidenceLevel
+  updated_at    DateTime @updatedAt
+
+  sector Sector @relation(fields: [sector_id], references: [id], onDelete: Cascade)
+
+  @@index([project_name, sector_id, bhk])
+  @@map("project_price_bands")
+}
+
+model SectorIntelligence {
+  id                 String   @id @default(uuid())
+  sector_id          String   @unique
+  key_growth_drivers String[]
+  rental_yield_avg   Float?
+  appreciation_5yr   Float?
+  map_center_lat     Float?
+  map_center_lng     Float?
+  map_zoom           Int?     @default(14)
+
+  sector Sector @relation(fields: [sector_id], references: [id], onDelete: Cascade)
+
+  @@map("sector_intelligence")
+}
+
+// ── New lightweight session tracking (replaces ChatSession) ──
+
+model ChatContext {
+  id           String   @id @default(uuid())
+  user_id      String   @unique
+  intent_state Json
+  resolved     Json
+  phase        String   // 'DISCOVERY' | 'ADVISOR'
+  completeness Int      @default(0)
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  @@index([user_id, updated_at])
+  @@map("chat_contexts")
+}
+
+model ChatAnalytics {
+  id        String   @id @default(uuid())
+  user_id   String
+  event     String
+  field     String?
+  phase     String
+  timestamp DateTime @default(now())
+
+  @@index([user_id, timestamp])
+  @@index([event])
+  @@map("chat_analytics")
+}
